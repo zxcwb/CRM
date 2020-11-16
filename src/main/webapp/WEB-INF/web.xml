@@ -5,6 +5,8 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
+
+  <!-- 用户控制器 -->
   <servlet>
     <servlet-name>UserController</servlet-name>
     <servlet-class>com.zxc.crm.settings.web.controller.UserController</servlet-class>

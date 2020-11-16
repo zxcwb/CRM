@@ -20,8 +20,10 @@ public class UserController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("进入用户控制器");
         String path = request.getServletPath();
+        System.out.println(path);
         if ("/settings/user/login.do".equals(path)){
-
+                    login(request,response);
+            System.out.println("执行这里的代码");
         }else if ("/settings/user/xxx.do".equals(path)){
 
         }

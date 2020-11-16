@@ -10,69 +10,69 @@
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-    <script>
-        $(function () {
-            //页面加载完毕，清空页面
-            $("#loginAct").val("");
-
-            //页面加载时，文本框自动获取焦点
-            $("#loginAct").focus();
-
-            //为登录按钮绑定事件，执行操作
-            $("#submitBtn").click(function () {
-               login()
-            })
-
-            //绑定敲键盘事件
-            $(window).keydown(function (event) {
-                if(event.keyCode==13){
-                    login()
-                }
-            })
-
-        })
-
-        //普通自定义方法一定要写在$function(){}外面
-        function login() {
-            //alert("登录操作")
-            //验证账号密码不能为空
-            //取得账号密码,将文本中的左右空格去掉，使用$.trim(文本)
-            var loginAct = $("#loginAct").val();
-            var loginPwd = $("#loginPwd").val();
-            if (loginAct == "" || loginPwd == ""){
-                $("#msg").html("账号密码不能为空！")
-                //如果账号密码为空，则需要及时强制该方法
-                return false;
-            }
-
-            //取得了用户填写的账号和密码，现在去数据库验证账号和密码
-            $.ajax({
-                url : "settings/user/login.do",
-                data : {
-                    "loginAct" : loginAct,
+	<script>
+		$(function () {
+			if(window.top!=window){
+				window.top.location=window.location;
+			}
+			//页面加载完毕后，将用户文本框中的内容清空
+			$("#loginAct").val("");
+			//页面加载完毕后，让用户的文本框自动获得焦点
+			$("#loginAct").focus();
+			//为登录按钮绑定事件，执行登录操作
+			$("#submitBtn").click(function () {
+				login();
+			})
+			//为当前登录也窗口绑定敲键盘事件
+			//event:这个参数可以取得我们敲的是哪个键
+			$(window).keydown(function (event) {
+				//alert(event.keyCode);
+				//如果取得的键位的码值为13，表示敲的是回车键
+				if(event.keyCode==13){
+					login();
+				}
+			})
+		})
+		//普通的自定义的function方法，一定要写在$(function(){})的外面
+		function login() {
+			//alert("登录操作123");
+			//验证账号密码不能为空
+			//取得账号密码
+			//将文本中的左右空格去掉，使用$.trim(文本)
+			var loginAct = $.trim($("#loginAct").val());
+			var loginPwd = $.trim($("#loginPwd").val());
+			if(loginAct=="" || loginPwd==""){
+				$("#msg").html("账号密码不能为空");
+				//如果账号密码为空，则需要及时强制终止该方法
+				return false;
+			}
+			//去后台验证登录相关操作
+			$.ajax({
+				url : "settings/user/login.do",
+				data : {
+					"loginAct" : loginAct,
 					"loginPwd" : loginPwd
-                },
-                type : "post",
-                datatype : "json",
-                success : function (data) {
-                    /*
-
-                    data
-                    {"success":true/false,msg:"哪错了"}
-
-                     */
-
-                    //如果登录成功
-					if (data.success){
-						//跳转到工作台（欢迎页）
-						window.location.href = "workbench/index.html";
-					}else {
+				},
+				type : "post",
+				dataType : "json",
+				success : function (data) {
+					/*
+						data
+							{"success":true/false,"msg":"哪错了"}
+					 */
+					//如果登录成功
+					if(data.success){
+						//跳转到工作台的初始也（欢迎页）
+						window.location.href = "workbench/index.jsp";
+						//如果登录失败
+					}else{
 						$("#msg").html(data.msg);
 					}
-                }
-            })
-        }
-    </script>
+				}
+			})
+		}
+	</script>
+
 </head>
 <body>
 	<div style="position: absolute; top: 0px; left: 0px; width: 60%;">
